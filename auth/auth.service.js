@@ -1,9 +1,8 @@
 /**
- * Created by zhengguorong on 16/11/2.
  * 用户权限认证方法
  *
  *  * Q&A
- * 为什么要使用composable-middleware,为了解决什么问题?
+ *     为什么要使用composable-middleware,为了解决什么问题?
  *     他的作用是合并两个中间件,让其不需要在挂在在express实例上,例如expressJwt中间件是在执行后操作req对象,在req对象
  *     上加入user对象,但该中间件未提供回调方法,无法在验证后执行我们的代码,因此需要使用composable插件来完成两个中间件的
  *     合并.
@@ -33,24 +32,23 @@ module.exports.isAuthenticated = () => {
             if (req.query && req.query.hasOwnProperty('access_token')) {
                 req.headers.authorization = `Bearer ${req.query.access_token}`;
             }
-            if(req.body && req.body.hasOwnProperty('access_token')) {
+            if (req.body && req.body.hasOwnProperty('access_token')) {
                 req.headers.authorization = `Bearer ${req.body.access_token}`;
             }
             // IE11 forgets to set Authorization header sometimes. Pull from cookie instead.
             if (req.query && typeof req.headers.authorization === 'undefined') {
                 req.headers.authorization = `Bearer ${req.cookies.token}`;
             }
-            //验证是否服务端生成的token
+            // 验证是否服务端生成的token
             var token = req.headers.authorization.split('Bearer ')[1]
             UserController.findByToken(token).then((user) => {
                 if (user) {
-                    //验证token是否过期
+                    // 验证token是否过期
                     validateJwt(req, res, next);
-                }else{
+                } else {
                     return res.status(401).end();
                 }
             })
-
         })
         // Attach user to request
         .use(function (req, res, next) {

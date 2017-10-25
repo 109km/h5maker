@@ -16,21 +16,20 @@
 <img src="http://test-10019075.cossh.myqcloud.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-27%2015.57.18.png" width="200"/>
 </div>
 
-<!--### 应用截图
-<div>
-<img src="	http://test-10019075.cossh.myqcloud.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-27%2016.00.10.png" width="800"/>
-</div>
-<br/>
-<div>
-<img src="	http://test-10019075.cossh.myqcloud.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-27%2016.00.19.png" width="800"/>
-</div>
-<div>
-<img src="	http://test-10019075.cossh.myqcloud.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-27%2016.03.02.png" width="800"/>
-</div>-->
-
 ### 运行方法
 > npm install  // 安装依赖
 
 > npm run webapp // 启动前端工程
 
 > npm run local //  启动后端工程
+
+### 问题记录
+1. 编辑页面：跳转链接不能带 ‘http://'
+2. 编辑页面：单页面无法调整页面高度
+3. 编辑页面：图片素材库没有保存
+4. 编辑页面：保存按钮位置调整到预览旁边。
+5. 编辑页面：无法选择页面宽高
+6. 编辑页面：增加新控件
+7. 编辑页面：会出现
+8. 预览弹窗：标题，描述没有保存按钮
+9. 项目主页：预览图没有生成

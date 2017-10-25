@@ -4,6 +4,7 @@ const login = (userInfo) => {
   return http.post('/auth/login', userInfo)
 }
 const register = (userInfo) => {
+  console.log(userInfo)
   return http.post('/auth/register', userInfo)
 }
 const logout = () => {

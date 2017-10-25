@@ -96,6 +96,7 @@
         margin-top: 20px;
       }
       .code {
+        overflow:hidden;
         .size {
           float: left;
           .radios {
@@ -113,20 +114,17 @@
         }
       }
       .link {
-        width:100%;
-        overflow: scroll;
         .link-title {
           margin: 10px 0;
         }
         .href {
-          width: 280px;
           line-height: 36px;
-          margin-right: 10px;
-          overflow: scroll;
-          float: left;
           input {
-            border: 0;
-            color: blue;
+            margin-bottom:10px;
+            padding:0 5px;
+            line-height: 36px;
+            border: 1px solid #e9e9e9;
+            color:#999;
             width: 100%;
           }
         }

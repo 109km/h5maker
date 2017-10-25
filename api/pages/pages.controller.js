@@ -9,6 +9,7 @@ const respondWithResult = (res, statusCode) => {
   statusCode = statusCode || 200
   return function (entity) {
     if (entity) {
+      console.log(entity)
       return res.status(statusCode).json(entity)
     }
     return null
@@ -79,7 +80,7 @@ module.exports.show = (req, res) => {
 
 // Creates a new Pages in the DB
 module.exports.create = (req, res) => {
-  //添加作者信息
+  // 添加作者信息
   req.body.loginId = req.user.loginId
   return Pages.create(req.body)
     .then(respondWithResult(res, 201))

@@ -10,6 +10,22 @@ import tools from '../../util/tools'
  */
 export const saveTheme = ({commit}, theme) => {
   if (theme && theme._id) {
+    let pages = theme.pages
+    pages.forEach((page) => {
+      // 正则校验url格式
+      let elements = page.elements
+      let reg = new RegExp(/^(http|https):\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
+      elements.forEach((element) => {
+        if (typeof element.href === 'string') {
+          if (!reg.test(element.href)) {
+            commit(types.CHECK_URL_VALID, false)
+            return
+          } else {
+            commit(types.CHECK_URL_VALID, true)
+          }
+        }
+      })
+    })
     return Promise.resolve(api.updateTheme(theme).then((res) => {
       commit(types.UPDATE_THEME_SUCCESS, res)
     }))

@@ -46,7 +46,7 @@
             <ImgPanel :selectedImg="addPicElement"/>
           </div>
           <!-- 图层编辑面板 -->
-          <EditPanel :element="element" :panelState="panelState" v-show="panelState > 10"/>
+          <EditPanel :element="element" :editorPage="editorPage" :panelState="panelState" v-show="panelState > 10"/>
         </div>
       </div>
     </section>
@@ -166,11 +166,18 @@
         this.$store.dispatch('playAnimate')
       },
       save () {
-        return this.$store.dispatch('saveTheme', tools.vue2json(this.$store.state.editor.editorTheme)).then(() => {
-          this.$message({
-            message: '保存成功',
-            type: 'success'
-          })
+        return this.$store.dispatch('saveTheme', tools.vue2json(this.$store.state.editor.editorTheme)).then((data) => {
+          if (this.$store.state.editor.editorPage.invalidURL) {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+          } else {
+            this.$message({
+              message: '请检查URL',
+              type: 'error'
+            })
+          }
         })
       },
       deploy () {

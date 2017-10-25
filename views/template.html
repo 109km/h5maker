@@ -42,14 +42,14 @@
                 <% if (element.type === 'pic') { %>
                   <div class="ele" style="z-index: <%= element['zindex'] %>; width: <%= element['width'] %>px; height: <%= element['height'] %>px; left: <%= element['left'] %>px; top: <%= element['top'] %>px;">
                     <div class="<%= element['animatedName'] && 'ani ' %><%= element['loop'] && 'loop ' %>" swiper-animate-effect="<%= element['animatedName'] %>" swiper-animate-duration="<%= element['duration'] && element['duration'] + 's' %>" swiper-animate-delay="<%= element['delay'] && element['delay'] + 's' %>">
-                      <% if (element.href) { %><a target="_blank" href="http://<%= element['href'] %>"><img class="ele-img" pre-src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg)"></a><%} else {%><img class="ele-img" pre-src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg)"><%}%>
+                      <% if (element.href) { %><a target="_blank" href="<%= element['href'] %>"><img class="ele-img" pre-src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg)"></a><%} else {%><img class="ele-img" pre-src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg)"><%}%>
                     </div>
                   </div>
                 <% } %>
                 <% if (element.type === 'text') { %>
                   <div class="ele" style="z-index: <%= element['zindex'] %>; width: <%= element['width'] %>px; left: <%= element['left'] %>px; top: <%= element['top'] %>px;">
                     <div class="<%= element['animatedName'] && 'ani ' %><%= element['loop'] && 'loop ' %>" swiper-animate-effect="<%= element['animatedName'] %>" swiper-animate-duration="<%= element['duration'] && element['duration'] + 's' %>" swiper-animate-delay="<%= element['delay'] && element['delay'] + 's' %>">
-                      <div style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg); color: <%= element['color'] %>; text-align: <%= element['textAlign'] %>; line-height: <%= element['lineHeight'] %>; font-family: <%= element['fontFamily'] %>; font-size: <%= element['fontSize'] %>px; white-space: pre-line;font-weight: <%= element['fontWeight'] || 'normal' %>"><% if (element.href) { %><a style="color: <%= element['color'] %>;" target="_blank" href="http://<%= element['href'] %>"><%= element.text %></a><%} else {%><%= element.text %><%}%></div>
+                      <div style="opacity: <%= element['opacity'] %>; transform: rotate(<%= element['transform'] %>deg); color: <%= element['color'] %>; text-align: <%= element['textAlign'] %>; line-height: <%= element['lineHeight'] %>; font-family: <%= element['fontFamily'] %>; font-size: <%= element['fontSize'] %>px; white-space: pre-line;font-weight: <%= element['fontWeight'] || 'normal' %>"><% if (element.href) { %><a style="color: <%= element['color'] %>;" target="_blank" href="<%= element['href'] %>"><%= element.text %></a><%} else {%><%= element.text %><%}%></div>
                     </div>
                   </div>
                 <% } %>

@@ -1,7 +1,7 @@
 import * as types from './mutation-type'
 import app from '../../util/appConst'
 import Element from '../../model/Element'
-
+import Vue from 'vue'
 const mutations = {
   [types.SET_CUR_EDITOR_ELEMENT] (state, data) {
     state.editorElement = data
@@ -93,6 +93,12 @@ const mutations = {
     state.editorTheme._id = data._id
   },
   [types.UPDATE_THEME_SUCCESS] (state, data) {
+  },
+  [types.UPDATE_THEME_FAILED] (state, data) {
+  },
+  [types.CHECK_URL_VALID] (state, data) {
+    console.log('CHECK_URL_VALID', data)
+    Vue.set(state.editorPage, 'invalidURL', data)
   },
   [types.SAVE_PIC] (state, data) {
     state.editorElement.imgSrc = app.APP_MALL_API_URL + data.filePath

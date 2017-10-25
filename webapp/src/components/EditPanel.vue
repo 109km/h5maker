@@ -75,6 +75,9 @@
         <label>跳转链接</label>
         <div class="content">
           <el-input v-model="element.href"></el-input>
+          <p class="url-tips">
+            链接请以"http://" 或 "https://"开头。
+          </p>
         </div>
       </div>
       <div class="item">
@@ -171,6 +174,11 @@
   .item {
     padding: 5px 0;
     clear: both;
+    .url-tips{
+      color:#999;
+      font-size: 12px;
+      margin-top:5px;
+    }
     .content {
       margin-left: 70px;
     }
@@ -211,6 +219,9 @@ export default {
     },
     panelState: {
       type: Number
+    },
+    editorPage: {
+      type: Object
     }
   },
   data () {

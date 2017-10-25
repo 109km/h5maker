@@ -1,5 +1,7 @@
 ## h5在线编辑平台
 
+`基于https://github.com/zhengguorong/h5maker进行二次开发`
+
 ### 技术架构
 > 前端：vue2.0 + vue-router + vuex + axios + Element ui
 

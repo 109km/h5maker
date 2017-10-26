@@ -22,6 +22,10 @@ export default [{
   name: 'spaeditor',
   component: require('./views/spaeditor/index.vue')
 }, {
+  path: '/simpleSpaeditor',
+  name: 'simpleSpaeditor',
+  component: require('./views/simpleSpa/index.vue')
+}, {
   path: '/themeList',
   name: 'themeList',
   component: require('./views/h5editor/themeList.vue')
@@ -30,7 +34,27 @@ export default [{
   name: 'spaList',
   component: require('./views/spaeditor/themeList.vue')
 }, {
+  path: '/simpleSpaList',
+  name: 'simpleSpaList',
+  component: require('./views/simpleSpa/themeList.vue')
+}, {
   path: '/about',
   name: 'about',
   component: require('./views/user/about.vue')
+}, {
+  path: '/formList',
+  name: 'formList',
+  component: require('./views/formeditor/list.vue')
+}, {
+  path: '/formeditor',
+  name: 'formeditor',
+  component: require('./views/formeditor/index.vue')
+}, {
+  path: '/checkAnswer',
+  name: 'checkAnswer',
+  component: require('./views/formeditor/checkAnswer.vue')
+}, {
+  path: '/logs',
+  name: 'logs',
+  component: require('./views/other/logs.vue')
 }]

@@ -17,5 +17,4 @@ var FileSchema = new mongoose.Schema({
     type: String
   }
 })
-
 module.exports = mongoose.model('File', FileSchema)

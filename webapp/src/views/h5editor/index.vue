@@ -1,16 +1,26 @@
 <template>
   <div class="editor">
-    <HeaderEdit :goback="dialogSave" @saveThemeSuccess="showPreView=true"/>
+    <HeaderEdit :goback="dialogSave" @saveSuccess="showPreView=true" :perViewAction="save"/>
     <section class="section">
       <Overview class="overview" />
       <Page class="canvas" :elements="editorPage.elements" :editorElement="element" :selectedElement="selectedElement" :style="{ width: canvasWidth + 'px', height: canvasHeight + 'px' }" />
       <div class="control-panel">
         <div class="funcs">
+          <el-tooltip  effect="dark" content="添加背景" placement="left">
+            <button class="func" @click="togglePanel(0)" :class="{ active: panelState === 0 }" >
+              <i class="iconfont" style="font-size: 18px;">&#xe622;</i>
+            </button>
+          </el-tooltip>
           <el-tooltip  effect="dark" content="新建文本" placement="left">
             <button class="func el-icon-edit" @click="togglePanel(1)" :class="{ active: panelState === 1 }"></button>
           </el-tooltip>
           <el-tooltip  effect="dark" content="新建素材" placement="left">
             <button class="func el-icon-picture" @click="togglePanel(2)" :class="{ active: panelState === 2 }"></button>
+          <el-tooltip  effect="dark" content="添加音乐" placement="left">
+          </el-tooltip>
+            <button class="func" @click="togglePanel(3)" :class="{ active: panelState === 3 }" >
+              <i class="iconfont">&#xe63e;</i>
+            </button>
           </el-tooltip>
           <el-tooltip  effect="dark" content="播放动画" placement="left">
             <button class="func el-icon-caret-right" @click="playAnimate"></button>
@@ -21,21 +31,9 @@
         </div>
         <div class="wrapper custom-scrollbar">
           <!-- 设置背景 0 -->
-        <div class="panel panel-bg">
-          <div class="clearfix"
-              v-if="panelTabState !== 1">
-            <el-button class="btn"
-                      type="success"
-                      @click="panelTabState = 1">更换背景</el-button>
-            <el-button class="btn"
-                      type="danger"
-                      @click="cleanBG">移除背景</el-button>
+          <div class="panel panel-bg" v-show="panelState === 0">
+            <BgPanel :themeId="themeId" :editorPage="editorPage" :elements="editorPage.elements"/>
           </div>
-          <div class="clearfix"
-              v-if="panelTabState === 1">
-            <ImgPanel  :selectedImg="addBG"/>
-          </div>
-        </div>
           <!-- 添加文字 1 -->
           <div class="panel panel-text" v-show="panelState === 1">
             <div class="btn" @click="addTextElement('title')" style="font-size: 32px; font-weight: bold;">插入标题</div>
@@ -43,7 +41,11 @@
           </div>
           <!-- 添加元素 2 -->
           <div class="panel panel-element clearfix" v-show="panelState === 2">
-            <ImgPanel :selectedImg="addPicElement"/>
+            <ImgPanel :themeId="themeId" :selectedImg="addPicElement" type="elementImg"/>
+          </div>
+          <!-- 添加背景音乐 3 -->
+          <div class="panel panel-music" v-show="panelState === 3">
+            <MusicPanel ref="musicPanel"/>
           </div>
           <!-- 图层编辑面板 -->
           <EditPanel :element="element" :editorPage="editorPage" :panelState="panelState" v-show="panelState > 10"/>
@@ -64,7 +66,10 @@
   import EditPanel from '../../components/EditPanel'
   import SvgPanel from '../../components/SvgPanel'
   import ImgPanel from '../../components/ImgPanel'
+  import MusicPanel from '../../components/MusicPanel'
+  import BgPanel from '../../components/BgPanel'
   import appConst from '../../util/appConst'
+
   export default {
     data () {
       return {
@@ -73,7 +78,6 @@
         canvasWidth: 320,
         canvasHeight: 504,
         dialogSaveBeforeBack: false,
-        panelTabState: 0,
         picBase64: '',
         http: appConst.BACKEND_DOMAIN,
         releaseUrl: '',
@@ -85,7 +89,6 @@
       element () {
         let ele = this.$store.state.editor.editorElement
         let type = ele ? ele.type : 'null'
-        this.panelTabState = 0
         switch (type) {
           case 'text':
             this.panelState = 11
@@ -94,8 +97,10 @@
           case 'pic':
             this.panelState = 12
             break
-          default:
+          case 'bgColor':
+          case 'bg':
             this.panelState = 0
+            break
         }
       }
     },
@@ -109,6 +114,9 @@
       element () {
         let ele = this.$store.state.editor.editorElement
         return ele || {}
+      },
+      editorTheme () {
+        return this.$store.state.editor.editorTheme
       }
     },
     methods: {
@@ -166,8 +174,9 @@
         this.$store.dispatch('playAnimate')
       },
       save () {
-        return this.$store.dispatch('saveTheme', tools.vue2json(this.$store.state.editor.editorTheme)).then((data) => {
-          if (this.$store.state.editor.editorPage.invalidURL) {
+        this.$refs.musicPanel.saveMusic()
+        return this.$store.dispatch('saveTheme', tools.vue2json(this.$store.state.editor.editorTheme)).then(() => {
+          if (this.$store.state.editor.editorPage.isValidURL) {
             this.$message({
               message: '保存成功',
               type: 'success'
@@ -201,12 +210,11 @@
         this.$store.dispatch('deleteSelectedElement')
       },
       togglePanel (code) {
-        console.log(code)
         this.panelState = code
       }
     },
     components: {
-      Overview, Page, PicPicker, appConst, PreView, HeaderEdit, EditPanel, SvgPanel, ImgPanel
+      Overview, Page, PicPicker, appConst, PreView, HeaderEdit, EditPanel, SvgPanel, ImgPanel, MusicPanel, BgPanel
     },
     mounted () {
       this.itemId = this.$route.query.itemId
@@ -220,6 +228,7 @@
         this.$store.dispatch('addPage')
         this.$store.dispatch('cleanPicList')
       }
+      this.$store.dispatch('cleanBgList')
       document.addEventListener('keyup', this.deleteListener)
       window.onbeforeunload = () => false
     },
@@ -292,12 +301,12 @@
         border: 1px solid #d6d6d6;
         border-radius: 3px 0px 0px 3px;
         &:hover {
-          color: #000;
-        }
+           color: #000;
+         }
         &.active {
-          border-right: 1px solid #ececec;
-          background-color: #ececec;
-          color: #000;
+           border-right: 1px solid #ececec;
+           background-color: #ececec;
+           color: #000;
         }
       }
     }
@@ -318,25 +327,7 @@
       background-color: #ececec;
     }
     .panel-bg {
-      .btn {
-        float: left;
-        width: 48%;
-        margin-left: 1%;
-        margin-right: 1%;
-      }
-      .bgs {
-        float: left;
-        width: 80px;
-        height: 80px;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        margin: 5px 5px;
-        &:hover {
-          border: 2px solid #18ccc0;
-          cursor: pointer;
-        }
-      }
+      clear:both;
     }
     .panel-text {
       .btn {
@@ -345,8 +336,8 @@
         text-align: center;
         border: 2px solid transparent;
         &:hover {
-          cursor: pointer;
-          border-color: #04b9c4;
+           cursor: pointer;
+           border-color: #04b9c4;
         }
       }
     }

@@ -1,7 +1,9 @@
 import * as types from './mutation-type'
 import app from '../../util/appConst'
 import Element from '../../model/Element'
+import Music from '../../model/Music'
 import Vue from 'vue'
+
 const mutations = {
   [types.SET_CUR_EDITOR_ELEMENT] (state, data) {
     state.editorElement = data
@@ -12,11 +14,17 @@ const mutations = {
   [types.SET_BG_ELEMENT] (state, data) {
     let haveBG = false
     state.editorPage.elements.findIndex((value, index, arr) => {
-      if (value.type === 'bg') {
+      if ((data.type === 'bgColor' && value.type === 'bg') || (data.type === 'bgColor' && value.type === 'bgColor')) {
+        haveBG = true
+        value.imgSrc = ''
+        value.bg = data.bg
+        value.type = 'bgColor'
+        return
+      }
+      if ((data.type === 'bg' && value.type === 'bg') || (data.type === 'bg' && value.type === 'bgColor')) {
         haveBG = true
         value.imgSrc = data.imgSrc
-        value.width = data.width
-        value.height = data.height
+        value.type = 'bg'
       }
     })
     if (!haveBG) {
@@ -78,6 +86,15 @@ const mutations = {
     state.editorTheme.description = description
     state.editorTheme.canvasHeight = canvasHeight
   },
+  [types.UPDATE_CANVASHEIGHT] (state, canvasHeight) {
+    state.editorTheme.canvasHeight = canvasHeight
+  },
+  [types.UPDATE_THEME_MUSIC] (state, {musicName, musicLink, musicStyle}) {
+    state.editorTheme = {...state.editorTheme, musicName, musicLink, musicStyle}
+  },
+  [types.SET_THEME_MUSIC_LIST] (state, data) {
+    state.editorTheme.uploadMusicList = data
+  },
   [types.DELETE_ELEMENT] (state, data) {
     state.editorPage.elements.findIndex((value, index, arr) => {
       if (value === data) {
@@ -97,8 +114,7 @@ const mutations = {
   [types.UPDATE_THEME_FAILED] (state, data) {
   },
   [types.CHECK_URL_VALID] (state, data) {
-    console.log('CHECK_URL_VALID', data)
-    Vue.set(state.editorPage, 'invalidURL', data)
+    Vue.set(state.editorPage, 'isValidURL', data)
   },
   [types.SAVE_PIC] (state, data) {
     state.editorElement.imgSrc = app.APP_MALL_API_URL + data.filePath
@@ -124,6 +140,12 @@ const mutations = {
   },
   [types.CLEAN_PIC_LIST] (state) {
     state.picList = []
+  },
+  [types.CLEAN_BG_LIST] (state) {
+    state.bgList = []
+  },
+  [types.PUSH_BG_LIST] (state, ele) {
+    state.bgList.push(ele)
   },
   [types.SORTELEMENTS] (state, data) {
     let element = state.editorPage.elements[data.start]
@@ -152,6 +174,31 @@ const mutations = {
     state.editorPage.elements.forEach((v, i, arr) => {
       arr[i]['zindex'] = i + 1
     })
+  },
+  [types.UPDATE_MUSIC_LIST] (state, index) {
+    state.musicList.splice(index, 1)
+  },
+  [types.UPDATE_MUSIC_LIST_PLAYING] (state, {index, isPlaying}) {
+    if (index === -1) return
+    state.musicList[index].isPlaying = isPlaying
+  },
+  [types.PUSH_MUSIC_LIST] (state, data) {
+    state.musicList.push(new Music(data))
+  },
+  [types.CLEAN_MUSIC_LIST] (state) {
+    state.musicList = []
+  },
+  [types.UPDATE_MUSIC_PLAYING] (state, musicPlaying) {
+    state.musicPlaying = musicPlaying
+  },
+  [types.PUSH_DEFAULT_MUSIC_LIST] (state, data) {
+    state.defaultMusicList[0].music.push(data)
+  },
+  [types.SET_DEFAULT_MUSIC_LIST] (state, data) {
+    state.defaultMusicList[0].music = data
+  },
+  [types.UPDATE_DEFAULT_MUSIC_LIST] (state, index) {
+    state.defaultMusicList[0].music.splice(index, 1)
   }
 }
 export default mutations

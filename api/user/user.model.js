@@ -29,10 +29,10 @@ var UserSchema = new mongoose.Schema({
 
 // Validate empty email
 UserSchema
-    .path('loginId')
-    .validate({
-    validator: (loginId) => {
-        return loginId.length
+  .path('loginId')
+  .validate({
+    validator:(loginId) => {
+      return loginId.length
     },
     message: '登陆名不能空'
 })
@@ -49,26 +49,26 @@ UserSchema
 
 // Validate loginId is not taken
 UserSchema
-    .path('loginId')
-    .validate({
+  .path('loginId')
+  .validate({
     validator: function (value, respond) {
         return this.constructor.findOne({
                 loginId: value
             }).exec()
-            .then(user => {
-                if (user) {
-                    if (this.id === user.id) {
-                        return respond(true)
-                    }
-                    return respond(false)
-                }
-                return respond(true)
-            })
-            .catch((err) => {
-                throw err
-            })
-    },
-    message: '该用户已存在'
+      .then(user => {
+        if (user) {
+          if (this.id === user.id) {
+            return respond(true)
+          }
+          return respond(false)
+        }
+        return respond(true)
+      })
+      .catch((err) => {
+        throw err
+      })
+  }, 
+  message:'该用户已存在'
 })
 
 var validatePresenceOf = (value) => {
@@ -189,19 +189,19 @@ UserSchema.methods = {
         var defaultKeyLength = 64
         var salt = new Buffer(this.salt, 'base64')
 
-        if (!callback) {
-            return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, 'RSA-SHA256')
-                .toString('base64')
-        }
-
-        return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, 'RSA-SHA256', (err, key) => {
-            if (err) {
-                return callback(err)
-            } else {
-                return callback(null, key.toString('base64'))
-            }
-        })
+    if (!callback) {
+      return crypto.pbkdf2Sync(password, salt, defaultIterations, defaultKeyLength, 'sha1')
+        .toString('base64')
     }
+
+    return crypto.pbkdf2(password, salt, defaultIterations, defaultKeyLength, 'sha1', (err, key) => {
+      if (err) {
+        return callback(err)
+      } else {
+        return callback(null, key.toString('base64'))
+      }
+    })
+  }
 }
 
 module.exports = mongoose.model('User', UserSchema)

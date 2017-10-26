@@ -27,6 +27,10 @@ export default {
   data () {
     return {
       navList: [{
+        path: 'simpleSpaList',
+        name: '图片单页',
+        active: false
+      }, {
         path: 'themeList',
         name: 'h5作品',
         active: false
@@ -35,8 +39,12 @@ export default {
         name: '单页作品',
         active: false
       }, {
-        path: 'about',
-        name: '开源声明',
+        path: 'formList',
+        name: '问卷调查',
+        active: false
+      }, {
+        path: 'logs',
+        name: '更新日志',
         active: false
       }
       ],

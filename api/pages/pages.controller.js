@@ -100,13 +100,16 @@ module.exports.update = (req, res) => {
     tools.renderFile('spa.html', req.body, (html) => {
       tools.saveFile(req.params.id + '.html', html)
     })
+  } else if (req.body.type === 'simple') {
+    tools.renderFile('simple.html', req.body, (html) => {
+      tools.saveFile(req.params.id + '.html', html)
+    })
   }
 
   return Pages.findOneAndUpdate({ _id: req.params.id }, req.body, { upsert: true, setDefaultsOnInsert: true, runValidators: true }).exec()
     .then(respondWithResult(res))
     .catch(handleError(res))
 }
-
 
 // Updates an existing Pages in the DB
 module.exports.patch = (req, res) => {

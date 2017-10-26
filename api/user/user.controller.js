@@ -55,6 +55,7 @@ module.exports.create = (req, res) => {
   let newUser = new User(req.body)
   newUser.provider = 'local'
   newUser.role = 'user'
+  console.log(newUser)
   newUser.save()
     .then((user) => {
       let token = jwt.sign({ _id: user._id }, config.secrets.session, {

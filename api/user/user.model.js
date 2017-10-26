@@ -30,9 +30,12 @@ var UserSchema = new mongoose.Schema({
 // Validate empty email
 UserSchema
   .path('loginId')
-  .validate((loginId) => {
-    return loginId.length
-  }, '登陆名不能空')
+  .validate({
+    validator:(loginId) => {
+      return loginId.length
+    },
+    message: '登陆名不能空'
+  })
 
 // Validate empty password
 UserSchema
@@ -44,7 +47,8 @@ UserSchema
 // Validate loginId is not taken
 UserSchema
   .path('loginId')
-  .validate(function (value, respond) {
+  .validate({
+    validator: function (value, respond) {
     return this.constructor.findOne({ loginId: value }).exec()
       .then(user => {
         if (user) {
@@ -58,7 +62,9 @@ UserSchema
       .catch((err) => {
         throw err
       })
-  }, '该用户已存在')
+  }, 
+  message:'该用户已存在'
+})
 
 var validatePresenceOf = (value) => {
   return value && value.length

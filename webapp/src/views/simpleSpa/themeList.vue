@@ -3,35 +3,45 @@
     <HeaderBar/>
     <div class="my-themes">
       <div class="container">
-        <ul class="theme-list">
-          <li class="theme-item create" @click="create">
-            <div class="create-area">
-              <p>创建作品</p>
-            </div>
-          </li>
-          <template v-for="item in list">
-            <li class="theme-item">
-              <div class="thumb" >
-                <img src="../../assets/images/default.png" alt="">
-                <div class="cover">
-                  <div class="toolbar">
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top-start">
-                      <i @click="toEditor(item)" class="el-icon-edit"></i>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top-start">
-                      <i @click.stop="deleteTheme(item)" class="el-icon-delete"></i>
-                    </el-tooltip>
-                  </div>
-                  <div class="preview" @click="showPreView(item._id)"><span>预 览</span></div>
-                </div>
-              </div>
-              <div class="footer">
-                <div class="title">{{item.title}}</div>
-                <div class="content">{{item.description}}</div>
-              </div>
-            </li>
-          </template>
-        </ul>
+        <div class="btn-create" @click="create">
+          创建作品
+        </div>
+        <div class="theme-list">
+          <table>
+            <colgroup>
+              <col width="200" />
+              <col width="400" />
+              <col width="200" />
+              <col width="150" />
+            </colgroup>
+            <tr>
+              <th>标题</th>
+              <th>描述</th>
+              <th>链接</th>
+              <th>操作</th>
+            </tr>
+            <template v-for="item in list">
+              <tr>
+                <td>
+                  {{item.title}}
+                </td>
+                <td>
+                  {{item.description}}
+                </td>
+                <td>
+                  {{BACKEND_DOMAIN + '/pages/' + item._id + '.html'}}
+                </td>
+                <td>
+                  <a href="javascript:;" @click="toEditor(item)">编辑</a>
+                  <a href="javascript:;" @click="showPreView(item._id)">预览</a>
+                  <a href="javascript:;" @click="deleteTheme(item)">删除</a>
+                </td>
+              </tr>
+            </template>
+            
+          </table>
+          
+        </div>
       </div>
     </div>
     <PreView :itemId="itemId" @hideView="isShowPreView=false" v-if="isShowPreView"/>
@@ -42,11 +52,13 @@
   import HeaderBar from '../../components/HeaderBar'
   import tools from '../../util/tools'
   import PreView from '../../components/PreView'
+  import appConst from '../../util/appConst'
   export default {
     data () {
       return {
         isShowPreView: false,
-        itemId: null
+        itemId: null,
+        BACKEND_DOMAIN: appConst.BACKEND_DOMAIN
       }
     },
     computed: {
@@ -92,6 +104,9 @@
       showPreView (itemId) {
         this.isShowPreView = true
         this.itemId = itemId
+      },
+      open (itemId) {
+        window.open(appConst.BACKEND_DOMAIN + '/pages/' + itemId + '.html')
       }
     },
     components: {
@@ -104,7 +119,17 @@
   .my-themes {
     width: 100%;
     height: 100%;
-    background-color: #f2f5f6;
+    .btn-create{
+      width:120px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      color:#fff;
+      background-color: #4A90E2;
+      border-radius: 5px;
+      margin: 0 0 20px 20px;
+      cursor: pointer;
+    }
   }
 
   .my-themes .container {
@@ -115,6 +140,29 @@
 
   .my-themes .theme-list {
     overflow: hidden;
+    padding:0 20px;
+    table{
+      width:100%;
+      th{
+        border:1px solid #d9d9d9;
+        padding:10px 5px;
+        background-color: #eee;
+        text-align: center;
+      }
+      td{
+        border:1px solid #d9d9d9;
+        padding:10px 5px;
+        font-size:12px;
+      }
+      a{
+        color:#4A90E2;
+        margin-right: 5px;
+      }
+      a:hover{
+        text-decoration: underline;
+      }
+    }
+    
   }
 
   .theme-item {
@@ -161,6 +209,9 @@
           cursor: pointer;
         }
       }
+      .preview.openlink{
+        margin-top:20px;
+      }
     }
   }
   .thumb:hover {
@@ -206,6 +257,7 @@
   .theme-item.create .create-area p {
     font-size: 20px;
     cursor: pointer;
-    margin-top: 100px;
+    margin: 100px auto 0 auto;
+    color:#f50;
   }
 </style>

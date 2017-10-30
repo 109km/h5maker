@@ -7,6 +7,11 @@
                  class="preview"
                  type="info"
                  :loading="loading">预览</el-button>
+
+      <el-button @click="save"
+                 class="save"
+                 type="info"
+                 >保存</el-button>
     </div>
   </header>
 </template>
@@ -31,6 +36,9 @@ export default {
           this.loading = false
         }, 1000)
       })
+    },
+    save () {
+      this.perViewAction()
     }
   }
 }
@@ -57,6 +65,9 @@ export default {
     align-items: center;
     padding-right: 15px;
     flex-direction: row-reverse;
+    .save{
+      margin-right: 10px;
+    }
   }
 }
 </style>

@@ -27,10 +27,6 @@ export default {
   data () {
     return {
       navList: [{
-        path: 'simpleSpaList',
-        name: '图片单页',
-        active: false
-      }, {
         path: 'themeList',
         name: 'h5作品',
         active: false

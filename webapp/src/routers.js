@@ -21,11 +21,13 @@ export default [{
   path: '/spaeditor',
   name: 'spaeditor',
   component: require('./views/spaeditor/index.vue')
-}, {
+},
+{
   path: '/simpleSpaeditor',
   name: 'simpleSpaeditor',
   component: require('./views/simpleSpa/index.vue')
-}, {
+},
+{
   path: '/themeList',
   name: 'themeList',
   component: require('./views/h5editor/themeList.vue')
@@ -33,11 +35,13 @@ export default [{
   path: '/spaList',
   name: 'spaList',
   component: require('./views/spaeditor/themeList.vue')
-}, {
-  path: '/simpleSpaList',
-  name: 'simpleSpaList',
-  component: require('./views/simpleSpa/themeList.vue')
-}, {
+},
+// {
+//   path: '/simpleSpaList',
+//   name: 'simpleSpaList',
+//   component: require('./views/simpleSpa/themeList.vue')
+// },
+{
   path: '/about',
   name: 'about',
   component: require('./views/user/about.vue')

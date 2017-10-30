@@ -13,13 +13,13 @@ import Vue from 'vue'
 export const saveTheme = ({commit}, theme) => {
   if (theme && theme._id) {
     let pages = theme.pages
-    let isValidURL = false
+    let isValidURL = true
     pages.forEach((page) => {
       // 正则校验url格式
       let elements = page.elements
       let reg = new RegExp(/^(http|https):\/\/([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)
       elements.forEach((element) => {
-        if (typeof element.href === 'string') {
+        if (typeof element.href === 'string' && element.href.length > 0) {
           if (!reg.test(element.href)) {
             isValidURL = false
             commit(types.CHECK_URL_VALID, false)

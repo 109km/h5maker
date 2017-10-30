@@ -7,7 +7,7 @@
         <!-- <Page :elements="editorPage.elements" :editorElement="element" :selectedElement="selectedElement" :style="{ width: canvasWidth + 'px', height: canvasHeight + 'px' }" /> -->
         <div class="canvas" :style="{ width: canvasWidth + 'px'}">
             <template v-for="element in editorPage.elements">
-              <img @click="selectedElement(element)" style="width: 100%" :src="http + element.imgSrc" :key="element"/>
+              <img @click="selectedElement(element)" style="width: 100%" :src="http + element.imgSrc" :key="element.id"/>
             </template>
         </div>
       </div>
@@ -16,9 +16,9 @@
           <el-tooltip  effect="dark" content="新建素材" placement="left">
             <button class="func el-icon-picture" @click="togglePanel(2)":class="{ active: panelState === 2 }"></button>
           </el-tooltip>
-          <el-tooltip  effect="dark" content="保存" placement="left">
+          <!-- <el-tooltip  effect="dark" content="保存" placement="left">
             <button class="func el-icon-upload" @click="save"></button>
-          </el-tooltip>
+          </el-tooltip> -->
         </div>
         <div class="wrapper custom-scrollbar">
           <!-- 添加元素 2 -->

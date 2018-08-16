@@ -19,6 +19,9 @@
 </div>
 
 ### 运行方法
+
+> mongod --dbpath ./db // 启动mongodb
+
 > npm install  // 安装依赖
 
 > npm run webapp // 启动前端工程
